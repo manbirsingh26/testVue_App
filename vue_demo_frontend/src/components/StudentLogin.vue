@@ -53,8 +53,10 @@
     </div>
   </div>
 </template>
+
 <script>
 import LoginService from "../services/LoginService";
+
 export default {
   name: "studentLogin",
   data() {
@@ -64,9 +66,9 @@ export default {
         password: ""
       },
       message: "",
-            // NEW: State for controlling the modal visibility
+      // NEW: State for controlling the modal visibility
       showModal: false,
-            // NEW: Data object object to store registration details
+      // NEW: Data object to store registration details
       newStudent: {
         studentId: "",
         password: "",
@@ -82,7 +84,9 @@ export default {
           var student = response.data;
           console.log(student);
           localStorage.setItem("sid", student.id);
+          this.message = ""; // Clear any previous error messages
           alert("success!");
+          this.$router.push({ name: "courses" }); // Optional: keeps route navigation if your app uses it
         })
         .catch(e => {
           this.studentLoginRequest.studentId = "";
@@ -91,7 +95,7 @@ export default {
           console.error(e);
         });
     },
-        // NEW: Open the registration form modal
+    // NEW: Open the registration form modal
     openCreateModal() {
       this.showModal = true;
     },    
@@ -100,14 +104,20 @@ export default {
       this.showModal = false;
       this.newStudent = { studentId: "", password: "", name: "", email: "" };
     },    
-    // NEW: Handle the registration logic
+    // UPDATED FOR LAB 4: Connect to the registration API service
     submitRegistration() {
-      // Print the collected student info in console for testing
-      console.log("Submitting new student data:", this.newStudent);      
-      // TODO: Connect to your registration api service here, e.g.:
-      // LoginService.register(this.newStudent).then(...).catch(...)
-            alert("Registration submitted successfully!");
-      this.closeCreateModal(); // Close modal after successful submission
+      console.log("Submitting new student data:", this.newStudent);
+
+      LoginService.register(this.newStudent)
+        .then(response => {
+          alert(response.data.message || "Registration submitted successfully!");
+          this.closeCreateModal(); // Close modal after successful submission
+        })
+        .catch(e => {
+          const errorMsg = e.response?.data?.message || "Registration failed, please try again.";
+          alert(errorMsg);
+          console.error(e);
+        });
     }
   },
   mounted() {
@@ -115,13 +125,13 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 /* Main wrapper setting the full-screen view and background picture */
 .login-container {
   width: 100vw;
   height: 100vh;
-background-image: url('../assets/Koala.jpg'); 
-
+  background-image: url('../assets/Koala.jpg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -203,4 +213,3 @@ background-image: url('../assets/Koala.jpg');
   border: none;
 }
 </style>
-

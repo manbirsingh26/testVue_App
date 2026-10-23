@@ -1,8 +1,12 @@
 import http from "../http-common.js";
 
 class LoginService {
-  login(data) {
-    return http.post("/login", data);
+  login(credentials) {
+    return http.post(`/login`, credentials);
+  }
+
+  register(studentData) {
+    return http.post(`/register`, studentData);
   }
 }
 

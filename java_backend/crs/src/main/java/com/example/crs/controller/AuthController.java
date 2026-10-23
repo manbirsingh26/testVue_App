@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
 
         String studentId = loginRequest.get("studentId");
@@ -31,5 +31,5 @@ public class AuthController {
         error.put("message", "Invalid Student ID or Password");
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
+    }*/
 }
