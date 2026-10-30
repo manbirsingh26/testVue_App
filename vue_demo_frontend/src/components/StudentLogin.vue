@@ -117,6 +117,7 @@ export default {
         .then(response => {
           let successMsg = response.data?.message || "Account removed successfully!";
           alert(successMsg);
+          console.log(`${successMsg} for ID: ${this.studentLoginRequest.studentId}, Name: ${response.data.name}, Email: ${response.data.email}`);
           // Clear inputs on success
           this.studentLoginRequest.studentId = "";
           this.studentLoginRequest.password = "";

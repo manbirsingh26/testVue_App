@@ -106,7 +106,7 @@ public class StudentController {
             // 2. Check the student existence in the dynamic map
             Student student = studentDatabase.get(studentId);
             
-         // 3. Validate the login info
+         // 3. Validate the info
             if (student != null && student.getPassword().equals(password)) {
                 // Success, assemble the data back to Vue
                 Map<String, String> response = new HashMap<>();
@@ -117,7 +117,7 @@ public class StudentController {
                 //removing the student
                 studentDatabase.remove(studentId);
                 // Send 200 OK along with student info
-                return ResponseEntity.status(HttpStatus.OK).body(response);
+                return ResponseEntity.ok(response);
             } else {
                 // Credential Check fail
                 Map<String, String> error = new HashMap<>();
