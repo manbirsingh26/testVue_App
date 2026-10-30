@@ -117,7 +117,7 @@ public class StudentController {
                 //removing the student
                 studentDatabase.remove(studentId);
                 // Send 200 OK along with student info
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 // Credential Check fail
                 Map<String, String> error = new HashMap<>();
