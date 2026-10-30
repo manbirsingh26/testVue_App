@@ -88,4 +88,43 @@ public class StudentController {
         successResponse.put("message", "Registration successful!");
         return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
     }
+    @PostMapping("/remove")
+    public ResponseEntity<?> removeStudent(@RequestBody Map<String, String> removeRequest){
+    	// 1.Validating Student ID and credential
+    	String studentId = removeRequest.get("studentId");
+        String password = removeRequest.get("password");
+        
+        // Checking that the ID and Password are not null
+        if (studentId == null || studentId.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+                
+                Map<String, String> error = new HashMap<>();
+                error.put("message", "Student ID and Password cannot be empty.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+
+            // 2. Check the student existence in the dynamic map
+            Student student = studentDatabase.get(studentId);
+            
+         // 3. Validate the login info
+            if (student != null && student.getPassword().equals(password)) {
+                // Success, assemble the data back to Vue
+                Map<String, String> response = new HashMap<>();
+                response.put("id", student.getStudentId());
+                response.put("name", student.getName());
+                response.put("email ", student.getEmail());
+                
+                //removing the student
+                studentDatabase.remove(studentId);
+                // Send 200 OK along with student info
+                return ResponseEntity.ok(response);
+            } else {
+                // Credential Check fail
+                Map<String, String> error = new HashMap<>();
+                error.put("message", "Cannot be removed.Invalid Student ID or Password");
+                
+                // Send 401 Unauthorized
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+            }
+    }
 }

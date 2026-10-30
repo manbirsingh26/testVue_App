@@ -5,6 +5,10 @@ class LoginService {
     return http.post(`/login`, credentials);
   }
 
+  remove(credentials) {
+    return http.post(`/remove`, credentials);
+  }
+
   register(studentData) {
     return http.post(`/register`, studentData);
   }

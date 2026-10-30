@@ -18,6 +18,7 @@
           <button type="submit">Login</button>
           <!-- Changed type to "button" to prevent form auto-submission -->
           <button type="button" @click="openCreateModal" class="create-btn">Create</button>
+          <button type="button" @click="removeAccount" class="remove-btn">Remove</button>
         </div>
       </form> 
       <p v-if="message" style="color: red;">{{ message }}</p>
@@ -98,7 +99,36 @@ export default {
     // NEW: Open the registration form modal
     openCreateModal() {
       this.showModal = true;
-    },    
+    }, 
+      // NEW METHOD: Remove account based on studentId and password authentication
+    removeAccount() {
+      // Basic validation check before sending request
+      if (!this.studentLoginRequest.studentId) {
+        alert("Please enter a Student ID to remove.");
+        return;
+      }
+      // Optional double-check confirmation for safety
+      if (!confirm(`Are you sure you want to remove account: ${this.studentLoginRequest.studentId}?`)) {
+        return;
+      }
+      console.log("Removing student account:", this.studentLoginRequest.studentId);     
+      // Depending on your API interface, you can pass either just ID, or both ID & password for verification
+      LoginService.remove(this.studentLoginRequest)
+        .then(response => {
+          let successMsg = response.data?.message || "Account removed successfully!";
+          alert(successMsg);
+          // Clear inputs on success
+          this.studentLoginRequest.studentId = "";
+          this.studentLoginRequest.password = "";
+          this.message = "";
+        })
+        .catch(e => {
+          console.error(e);
+          let errorMsg = e.response?.data?.message || "Failed to remove account. Check credentials or connection.";
+          alert(errorMsg);
+        });
+    },
+ 
     // NEW: Close the registration form modal and clear inputs
     closeCreateModal() {
       this.showModal = false;
