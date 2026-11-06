@@ -87,7 +87,8 @@ export default {
           localStorage.setItem("sid", student.id);
           this.message = ""; // Clear any previous error messages
           alert("success!");
-          this.$router.push({ name: "courses" }); // Optional: keeps route navigation if your app uses it
+          // Redirect to the HelloWorld landing page
+          this.$router.push('/helloworld');
         })
         .catch(e => {
           this.studentLoginRequest.studentId = "";

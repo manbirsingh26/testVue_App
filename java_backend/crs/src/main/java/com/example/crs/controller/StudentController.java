@@ -112,7 +112,7 @@ public class StudentController {
                 Map<String, String> response = new HashMap<>();
                 response.put("id", student.getStudentId());
                 response.put("name", student.getName());
-                response.put("email ", student.getEmail());
+                response.put("email", student.getEmail());
                 
                 //removing the student
                 studentDatabase.remove(studentId);
