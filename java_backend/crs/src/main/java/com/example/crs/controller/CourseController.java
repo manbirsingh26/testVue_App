@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.crs.model.Course;
 import com.example.crs.model.CourseRepository;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
 public class CourseController {
